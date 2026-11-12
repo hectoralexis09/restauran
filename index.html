@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTAURANT PRO | Sistema Digital</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header class="encabezado">
+    <div class="logo">
+        <span>🍽️</span>
+        <div>
+            <h1>RESTAURANT PRO</h1>
+            <p>Sistema Digital de Restaurantes</p>
+        </div>
+    </div>
+    <button class="btn-menu" onclick="mostrarVista('inicio')">Inicio</button>
+</header>
+
+<nav class="navegacion">
+    <button onclick="mostrarVista('inicio')">Inicio</button>
+    <button onclick="mostrarVista('menu')">Menú</button>
+    <button onclick="mostrarVista('pedidos')">Pedidos</button>
+    <button onclick="mostrarVista('reservas')">Reservaciones</button>
+    <button onclick="mostrarVista('favoritos')">Favoritos</button>
+    <button onclick="mostrarVista('perfil')">Administración</button>
+</nav>
+
+<main>
+
+    <!-- INICIO -->
+    <section id="inicio" class="vista activa">
+        <div class="portada">
+            <div class="portada-contenido">
+                <span class="etiqueta">BIENVENIDO A RESTAURANT PRO</span>
+                <h2>Una nueva experiencia gastronómica</h2>
+                <p>
+                    Administra tus pedidos, consulta nuestro menú
+                    y realiza tus reservaciones desde un solo lugar.
+                </p>
+                <button class="btn-principal" onclick="mostrarVista('menu')">
+                    Explorar menú
+                </button>
+            </div>
+        </div>
+
+        <h2 class="titulo-seccion">Nuestros servicios</h2>
+
+        <div class="servicios">
+            <div class="servicio">
+                <span>🍴</span>
+                <h3>Menú digital</h3>
+                <p>Consulta todos nuestros platillos.</p>
+            </div>
+
+            <div class="servicio">
+                <span>🛒</span>
+                <h3>Pedidos</h3>
+                <p>Agrega productos a tu pedido.</p>
+            </div>
+
+            <div class="servicio">
+                <span>📅</span>
+                <h3>Reservaciones</h3>
+                <p>Reserva una mesa fácilmente.</p>
+            </div>
+
+            <div class="servicio">
+                <span>⭐</span>
+                <h3>Favoritos</h3>
+                <p>Guarda tus platillos preferidos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="vista">
+        <h2 class="titulo-seccion">Nuestro menú</h2>
+
+        <input
+            type="text"
+            id="buscarPlatillo"
+            placeholder="Buscar un platillo..."
+            oninput="buscarPlatillos()"
+        >
+
+        <div class="filtros">
+            <button onclick="filtrar('Todos')">Todos</button>
+            <button onclick="filtrar('Entradas')">Entradas</button>
+            <button onclick="filtrar('Platos fuertes')">Platos fuertes</button>
+            <button onclick="filtrar('Postres')">Postres</button>
+            <button onclick="filtrar('Bebidas')">Bebidas</button>
+        </div>
+
+        <div id="listaPlatillos" class="productos"></div>
+    </section>
+
+    <!-- PEDIDOS -->
+    <section id="pedidos" class="vista">
+        <h2 class="titulo-seccion">Mi pedido</h2>
+
+        <div class="panel">
+            <div id="listaPedido">
+                Tu pedido está vacío.
+            </div>
+
+            <h3>Total: $<span id="totalPedido">0.00</span></h3>
+
+            <button class="btn-secundario" onclick="vaciarPedido()">
+                Vaciar pedido
+            </button>
+
+            <button class="btn-principal" onclick="enviarPedido()">
+                Confirmar pedido
+            </button>
+
+            <p id="mensajePedido"></p>
+        </div>
+    </section>
+
+    <!-- RESERVACIONES -->
+    <section id="reservas" class="vista">
+        <h2 class="titulo-seccion">Reservar una mesa</h2>
+
+        <form id="formReserva" class="formulario">
+
+            <label>Nombre completo</label>
+            <input type="text" name="nombre" required>
+
+            <label>Fecha</label>
+            <input type="date" name="fecha" required>
+
+            <label>Hora</label>
+            <input type="time" name="hora" required>
+
+            <label>Número de personas</label>
+            <input type="number" name="personas" min="1" max="20" required>
+
+            <label>Comentarios adicionales</label>
+            <textarea name="comentarios"
+                placeholder="Escribe algún comentario..."></textarea>
+
+            <button type="submit" class="btn-principal">
+                Realizar reservación
+            </button>
+        </form>
+
+        <p id="mensajeReserva"></p>
+    </section>
+
+    <!-- FAVORITOS -->
+    <section id="favoritos" class="vista">
+        <h2 class="titulo-seccion">Mis favoritos ⭐</h2>
+        <div id="listaFavoritos" class="productos">
+            No tienes favoritos todavía.
+        </div>
+    </section>
+
+    <!-- ADMINISTRACION -->
+    <section id="perfil" class="vista">
+        <h2 class="titulo-seccion">Panel de administración</h2>
+
+        <div class="panel">
+            <h3>Seleccionar tipo de usuario</h3>
+
+            <select id="rolUsuario" onchange="cambiarRol()">
+                <option value="cliente">Cliente</option>
+                <option value="chef">Chef</option>
+                <option value="gerente">Gerente</option>
+                <option value="supervisor">Supervisor</option>
+            </select>
+
+            <div id="permisosRol">
+                Bienvenido al sistema.
+            </div>
+        </div>
+
+        <!-- CLIENTE -->
+        <div id="panelCliente" class="panel panel-rol">
+            <h2>👤 Panel del cliente</h2>
+            <p>Bienvenido a RESTAURANT PRO.</p>
+            <p>Desde aquí puedes consultar el menú, hacer pedidos y reservar mesas.</p>
+
+            <button class="btn-principal" onclick="mostrarVista('menu')">
+                Ver menú
+            </button>
+
+            <button class="btn-secundario" onclick="mostrarVista('reservas')">
+                Reservar mesa
+            </button>
+        </div>
+
+        <!-- CHEF -->
+        <div id="panelChef" class="panel panel-rol" style="display:none">
+            <h2>👨‍🍳 Panel del chef</h2>
+            <p>Estos son los pedidos que debes preparar.</p>
+
+            <div class="estadisticas">
+                <div class="estadistica">
+                    <h3 id="pedidosPendientes">0</h3>
+                    <p>Pendientes</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="pedidosPreparacion">0</h3>
+                    <p>En preparación</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="pedidosListos">0</h3>
+                    <p>Listos</p>
+                </div>
+            </div>
+
+            <h3 class="subtitulo-admin">Pedidos por preparar</h3>
+            <div id="listaPedidosChef"></div>
+        </div>
+
+        <!-- GERENTE -->
+        <div id="panelGerente" class="panel panel-rol" style="display:none">
+            <h2>📊 Panel del gerente</h2>
+            <p>Consulta los pedidos y las estadísticas del restaurante.</p>
+
+            <div class="estadisticas">
+                <div class="estadistica">
+                    <h3 id="gerenteTotal">0</h3>
+                    <p>Total de pedidos</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="gerenteReservas">0</h3>
+                    <p>Reservaciones</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="gerentePlatillos">32</h3>
+                    <p>Platillos</p>
+                </div>
+            </div>
+
+            <h3 class="subtitulo-admin">Todos los pedidos</h3>
+            <div id="listaPedidosGerente"></div>
+        </div>
+
+        <!-- SUPERVISOR -->
+        <div id="panelSupervisor" class="panel panel-rol" style="display:none">
+            <h2>🛡️ Panel del supervisor</h2>
+            <p>Supervisa la actividad general del restaurante.</p>
+
+            <div class="estadisticas">
+                <div class="estadistica">
+                    <h3 id="superTotal">0</h3>
+                    <p>Total pedidos</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="superPendientes">0</h3>
+                    <p>En proceso</p>
+                </div>
+
+                <div class="estadistica">
+                    <h3 id="superListos">0</h3>
+                    <p>Pedidos listos</p>
+                </div>
+            </div>
+
+            <h3 class="subtitulo-admin">Actividad del restaurante</h3>
+            <div id="actividadSupervisor"></div>
+        </div>
+
+        <!-- ESTADISTICAS -->
+        <h2 class="titulo-seccion">Estadísticas generales</h2>
+
+        <div class="estadisticas">
+            <div class="estadistica">
+                <h3 id="statPlatillos">32</h3>
+                <p>Platillos</p>
+            </div>
+
+            <div class="estadistica">
+                <h3 id="statPedidos">0</h3>
+                <p>Pedidos</p>
+            </div>
+
+            <div class="estadistica">
+                <h3 id="statReservas">0</h3>
+                <p>Reservaciones</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <h3>RESTAURANT PRO</h3>
+    <p>© 2026 Sistema Digital de Restaurantes</p>
+    <p>Calidad, servicio y excelencia.</p>
+</footer>
+
+<script src="java.js"></script>
+
+</body>
+</html>
